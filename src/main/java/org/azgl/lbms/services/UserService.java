@@ -5,6 +5,7 @@ import org.azgl.lbms.model.User;
 import org.azgl.lbms.repository.LoanRepository;
 import org.azgl.lbms.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,15 +16,19 @@ import java.util.UUID;
 
 @Service
 public class UserService {
+    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final LoanRepository loanRepository;
 
-    public UserService(UserRepository userRepository, LoanRepository loanRepository) {
+    public UserService(UserRepository userRepository, LoanRepository loanRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.loanRepository = loanRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public void addUser(User user) {
+        String hashedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
         userRepository.save(user); // Using the save() method from JpaRepository
     }
 
