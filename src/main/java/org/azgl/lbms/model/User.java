@@ -52,6 +52,14 @@ public class User implements UserDetails {
         this.username = username;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
     public int getBorrowLimit() {
         return borrowLimit;
     }
